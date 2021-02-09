@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="info">
+	
+	
+	<select id="selectinfo" resultType="infoVo">
+		select * from board_info
+	</select>
+	
+	<insert id="insertinfo" parameterType="infoVo">
+		insert into board_info (bor_no,bor_act,bor_name) values (
+													(select NVL(MAX(bor_no),0)+1 from board_info),
+													#{bor_act},
+												    #{bor_name})	
+	</insert>
+	
+	<update id="updateinfo" parameterType="infoVo">
+		update board_info set bor_act = #{bor_act} where bor_name = #{bor_name}
+	</update>
+
+	
+</mapper>
