@@ -71,11 +71,11 @@
      
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li ><a href="/board/boardmake">게시판생성 <span class="sr-only">(current)</span></a></li>
+            <li ><a href="/board/boardactive">게시판생성 <span class="sr-only">(current)</span></a></li>
             <li class="active"></li>
             <c:forEach var="list" items="${list}">
             <c:if test="${list.bor_act == 1 }">
-                       <li><a onclick="url('${list.bor_no}');">${list.bor_name}</a></li>
+                       <li><a href="/board/pagingboard" onclick="url('${list.bor_no}');">${list.bor_name}</a></li>
             </c:if>
 	        </c:forEach>
           </ul>

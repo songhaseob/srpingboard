@@ -17,7 +17,7 @@ public class BoardPostVo {
 		return bor_no;
 	}
 	
-	
+	public BoardPostVo() {}
 
 	public void setBor_no(int bor_no) {
 		this.bor_no = bor_no;

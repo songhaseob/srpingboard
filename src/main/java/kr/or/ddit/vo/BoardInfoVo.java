@@ -7,6 +7,8 @@ public class BoardInfoVo {
 	
  
 	
+	
+
 	public int getBor_no() {
 		return bor_no;
 	}

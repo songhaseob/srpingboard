@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.or.ddit.service.BoardInfoService;
 import kr.or.ddit.service.BoardPostService;
@@ -42,6 +44,11 @@ public class BoardController {
 		return "login";
 	}
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	
+	@RequestMapping("mainview")
+	public String mainshow() {
+		return "boardmain";
+	}
 	
 	@RequestMapping(path="main", method = RequestMethod.GET)
 	public String mainView(BoardUserVo userVo, Model model, HttpSession session) {
@@ -192,22 +199,20 @@ public class BoardController {
 	}
 	
 	@RequestMapping(path="insertboardpost",method = RequestMethod.POST)
-	public String insertboardpost(BoardPostVo postVo, Model model,HttpServletRequest req) {
+	public String insertboardpost(BoardPostVo postvo, Model model,HttpServletRequest req,RedirectAttributes ra) {
 		
 		int insertCnt = 0;
 		
-	
-		model.addAttribute("userid", postVo);
-		model.addAttribute("post_no", postVo);
-		model.addAttribute("user_id", postVo);
-		postvo.setUser_id(userid); 
-		postvo.setTitle(title);
-		postvo.setCont(editordata);
-		postvo.setBor_no(borno);
+		model.addAttribute("user_id", postvo);
+		model.addAttribute("title", postvo);
+		model.addAttribute("editordata", postvo);
+		model.addAttribute("borno", postvo);
 		
-		insertCnt = boardpostService.boardpostinsert(postVo);
+		ra.addAttribute(postvo);
+		
+		insertCnt = boardpostService.boardpostinsert(postvo);
 		if(insertCnt == 1) {
-			return "redirect:/board/boardpaging?no="+borno+"&userid="+userid;
+			return "redirect:/board/boardpaging?no="+postvo+"&userid="+postvo;
 		}else {
 			return "redirect:/board/insertboardpostview";
 			
@@ -227,6 +232,60 @@ public class BoardController {
 		return "/board/boarddetail";
 	}
 	
+	@RequestMapping("boardpostupdate")
+	public String boardpostupdate(HttpServletRequest req, HttpServletResponse resp, RedirectAttributes ra) {
+		String checkYn = req.getParameter("checkYn");
+		
+
+		int post_no = Integer.parseInt(req.getParameter("post_no2"));
+		int bor_no = Integer.parseInt(req.getParameter("bor_no2"));
+		String title = req.getParameter("title2");
+		String cont = req.getParameter("cont2");
+		
+		logger.debug("포스트엔오가들어가지냐?",post_no);
+		
+		BoardPostVo postvo = new BoardPostVo();
+		
+		postvo.setPost_no(post_no);
+		postvo.setBor_no(bor_no);
+		postvo.setTitle(title);
+		postvo.setCont(cont);
+		ra.addAttribute("bor_no", bor_no);
+		req.setAttribute("postvo", postvo);
+		
+		int updateCnt = 0;
+		
+		try {
+			
+			if("Y".equals(checkYn)) {
+				updateCnt = boardpostService.updatepost(postvo);
+			} else {
+				updateCnt = 1;
+			}
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			updateCnt = 0;
+		}
+			if(updateCnt == 1 ) {
+				
+				if("Y".equals(checkYn)) {
+					return "/boardpaging?no="+bor_no;
+				}else {
+					return "/board/boardupdate";
+				}
+				
+			}else {
+				return "/board/boardupdate";
+				
+			}
+			
+			
+		}
+	}
+
 	
 	
-}
+

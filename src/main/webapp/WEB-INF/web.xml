@@ -19,7 +19,12 @@
   <listener>
   	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
-  
+  <listener>
+    <listener-class>kr.or.ddit.listener.ApplicationListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>kr.or.ddit.listener.LoginUserListener</listener-class>
+  </listener>
   <servlet>
   	<servlet-name>dispatcherServlet</servlet-name>
   	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

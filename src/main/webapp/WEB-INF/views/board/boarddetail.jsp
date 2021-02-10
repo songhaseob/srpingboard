@@ -20,7 +20,7 @@
  		$(function(){
  			$('#updatebtn').on("click",function(){
  			    $('#frm2').attr("method","get");
- 				$('#frm2').attr("action","${cp}/boardpostupdate");
+ 				$('#frm2').attr("action","/board/boardpostupdate");
  				$('#frm2').submit();
  			})
  			
