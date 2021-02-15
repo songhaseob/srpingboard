@@ -29,12 +29,12 @@
  	</script>
 
     <!-- Bootstrap core CSS -->
-    <link href="${cp }/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="${cp }/css/dashboard.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
 
-    <script src="${cp }/css/ie-emulation-modes-warning.js"></script>
+    <script src="/css/ie-emulation-modes-warning.js"></script>
 	
    
   </head>

@@ -2,17 +2,23 @@ package kr.or.ddit.vo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class BoardPostVo {
 	private int bor_no;
 	private int post_no;
 	private String user_id;
 	private String title;
 	private String cont;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date reg_dt;
+	
 	private int post_del;
 	private int bor_c_nm;
 	private int post_c_no;
 	private String rep_user_id;
+	
 	public int getBor_no() {
 		return bor_no;
 	}

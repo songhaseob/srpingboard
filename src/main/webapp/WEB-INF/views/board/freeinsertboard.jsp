@@ -82,13 +82,13 @@
           
         </div>
         <form action="/board/insertboardpost" method="post" >
-        <input type="hidden" name ="borno" value="${borno}">
-        <input type="hidden" name="userid" value="${S_USER.userid}">	
+        <input type="hidden" name ="bor_no" value="${bor_no}">
+        <input type="hidden" name="user_id" value="${S_USER.userid}">	
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 	          <h1 class="page-header">게시판등록</h1>
 	          <label>제&nbsp;&nbsp;&nbsp;&nbsp;목 : </label><input type="text" name="title"><br>
 	          <br>
-	           <textarea id="summernote" name="editordata"></textarea>
+	           <textarea id="summernote" name="cont"></textarea>
 	          <input type="submit" id="insertbtn" value="등록">
         </div>
      </form>

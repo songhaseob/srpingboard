@@ -21,16 +21,7 @@
 		 RequestMappingHandlerAdapter 
 		-->
 	<mvc:annotation-driven/>
-	<!--  view Resolver 우선순위
-	      order 필드 값이 낮을수록 우선순위가 높다 
-	-->
 	
-	
-	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
-		<property name="order" value="1"/>
-	</bean>
-	
-	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
 	
 	
 	

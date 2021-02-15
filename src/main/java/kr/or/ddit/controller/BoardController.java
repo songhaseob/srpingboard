@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -29,6 +30,7 @@ import kr.or.ddit.vo.BoardUserVo;
 @RequestMapping("board")
 @Controller
 public class BoardController {
+	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
 	@Resource(name="boarduserService")
 	private BoardUserService userService;
@@ -43,7 +45,6 @@ public class BoardController {
 	public String loginView() {
 		return "login";
 	}
-	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
 	@RequestMapping("mainview")
 	public String mainshow() {
@@ -192,8 +193,14 @@ public class BoardController {
 	}
 	
 	@RequestMapping("insertboardpostview")
-	public String insertboardpost(Model model, BoardInfoVo infoVo) {
-		model.addAttribute("borno", infoVo);
+	public String insertboardpost(Model model, int borno, HttpSession session) {
+		
+		BoardUserVo vo = (BoardUserVo) session.getAttribute("S_USER");
+		
+		model.addAttribute("bor_no", borno);
+		model.addAttribute("user_id", vo.getUserid());
+		
+		
 		model.addAttribute("list", boardinfoService.selectinfo());
 		return "/board/freeinsertboard";
 	}
@@ -203,16 +210,15 @@ public class BoardController {
 		
 		int insertCnt = 0;
 		
-		model.addAttribute("user_id", postvo);
-		model.addAttribute("title", postvo);
-		model.addAttribute("editordata", postvo);
-		model.addAttribute("borno", postvo);
-		
-		ra.addAttribute(postvo);
+		ra.addAttribute("user_id", postvo.getUser_id());
+		ra.addAttribute("title", postvo.getTitle());
+		ra.addAttribute("cont", postvo.getCont());
+		ra.addAttribute("bor_no", postvo.getBor_no());
 		
 		insertCnt = boardpostService.boardpostinsert(postvo);
+		
 		if(insertCnt == 1) {
-			return "redirect:/board/boardpaging?no="+postvo+"&userid="+postvo;
+			return "redirect:/board/boardpaging?no="+postvo.getBor_no()+"&userid="+postvo.getUser_id();
 		}else {
 			return "redirect:/board/insertboardpostview";
 			
@@ -234,15 +240,13 @@ public class BoardController {
 	
 	@RequestMapping("boardpostupdate")
 	public String boardpostupdate(HttpServletRequest req, HttpServletResponse resp, RedirectAttributes ra) {
+		
 		String checkYn = req.getParameter("checkYn");
 		
-
 		int post_no = Integer.parseInt(req.getParameter("post_no2"));
 		int bor_no = Integer.parseInt(req.getParameter("bor_no2"));
 		String title = req.getParameter("title2");
 		String cont = req.getParameter("cont2");
-		
-		logger.debug("포스트엔오가들어가지냐?",post_no);
 		
 		BoardPostVo postvo = new BoardPostVo();
 		
@@ -250,7 +254,7 @@ public class BoardController {
 		postvo.setBor_no(bor_no);
 		postvo.setTitle(title);
 		postvo.setCont(cont);
-		ra.addAttribute("bor_no", bor_no);
+		
 		req.setAttribute("postvo", postvo);
 		
 		int updateCnt = 0;
@@ -264,26 +268,49 @@ public class BoardController {
 			}
 			
 			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			updateCnt = 0;
 		}
+				
 			if(updateCnt == 1 ) {
 				
 				if("Y".equals(checkYn)) {
-					return "/boardpaging?no="+bor_no;
+					return "redirect:/board/freeboard";
 				}else {
 					return "/board/boardupdate";
 				}
 				
 			}else {
 				return "/board/boardupdate";
-				
 			}
 			
 			
 		}
+	
+	@RequestMapping("boardpostdelete")
+	public String boarddelete(HttpServletRequest req) {
+		
+		int post_no = Integer.parseInt(req.getParameter("post_no2"));
+		int bor_no = Integer.parseInt(req.getParameter("bor_no2"));
+		
+		BoardPostVo postvo = new BoardPostVo();
+		
+		postvo.setPost_no(post_no);
+		postvo.setBor_no(bor_no);
+		
+		int deleteCnt = 0;
+		
+		deleteCnt = boardpostService.deletepost(postvo);
+		
+		return "redirect:/board/boardpaging?no="+postvo.getBor_no();
+	}
+	
+	@RequestMapping("boardreplysave")
+	public String boardreplysave(BoardPostVo postvo) {
+		
+		return "redirect:/board/boardpaging?no="+postvo.getBor_no();
+	}
 	}
 
 	

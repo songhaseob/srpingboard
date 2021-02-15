@@ -11,7 +11,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="${cp }/resources/favicon.ico">
+    <link rel="icon" href="/resources/favicon.ico">
 
     <title>Dashboard Template for Bootstrap</title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -82,7 +82,7 @@
           			<td>${c.count }</td>
           			<td>${i.user_id }</td>
           			<td>${i.title }</td>
-          			<td><fmt:formatDate value="${i.reg_dt}" pattern="yyyy-MM-DD"/></td>
+          			<td><fmt:formatDate value="${i.reg_dt}" pattern="yyyy-MM-dd"/></td>
           		</tr>
           			</c:forEach>
           	</table>
